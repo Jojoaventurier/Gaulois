@@ -106,9 +106,20 @@
 
 -- 12. Nom des potions dont un des ingrédients est le poisson frais. 
 
+    SELECT nom_potion 
+    FROM composer
+    INNER JOIN potion ON composer.id_potion = potion.id_potion
+    WHERE composer.id_ingredient = 24
 
 
 -- 13. Nom du/des lieu(x) possédant le plus d'habitants, en dehors du village gaulois.
+
+    SELECT nom_lieu, COUNT(id_personnage) AS compte
+    FROM personnage
+    RIGHT JOIN lieu ON personnage.id_lieu = lieu.id_lieu
+    WHERE personnage.id_lieu != 1
+    GROUP BY lieu.nom_lieu
+    ORDER BY compte DESC
 
 -- 14. Nom des personnages qui n'ont jamais vu aucune potion
 

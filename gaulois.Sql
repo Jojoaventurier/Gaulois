@@ -13,7 +13,7 @@
     SELECT id_lieu, COUNT(personnage.id_lieu)
     FROM personnage
     GROUP BY personnage.id_lieu
-    ORDER BY COUNT(nom_personnage) DESC
+    ORDER BY COUNT(id_personnage) DESC
 
         -- ou mieux--
 
@@ -21,7 +21,7 @@
         FROM personnage
         LEFT JOIN lieu ON personnage.id_lieu = lieu.id_lieu
         GROUP BY personnage.id_lieu
-        ORDER BY COUNT(nom_personnage) DESC
+        ORDER BY COUNT(id_personnage) DESC
 
 
 -- 3. Nom des personnages + spécialité + adresse et lieu d'habitation, triés par lieu puis par nom de personnage
@@ -36,8 +36,8 @@
     SELECT specialite.nom_specialite, COUNT(nom_personnage)
     FROM personnage
     LEFT JOIN specialite ON personnage.id_specialite = specialite.id_specialite
-    GROUP BY nom_specialite
-    ORDER BY COUNT(nom_personnage) DESC
+    GROUP BY personnage.id_specialite
+    ORDER BY COUNT(id_personnage) DESC
 
 
 -- 5. Nom, date et lieu des batailles, classées de la plus récente à la plus ancienne (dates affichées au format jj/mm/aaaa)
@@ -50,6 +50,8 @@
         -- Note: Avec RIGHT JOIN ou LEFT JOIN, au lieu de INNER JOIN, on peut afficher en plus les lieux dans lesquels il n'y a pas eu de bataille, ce qui n'est pas le cas avec INNER JOIN
 
 -- 6. Nom des potions + coût de réalisation de la potion (trié par coût décroissant)
+
+
 
 -- 7. Nom des ingrédients + coût + quantité de chaque ingrédient qui composent la potion 'Santé'.
 

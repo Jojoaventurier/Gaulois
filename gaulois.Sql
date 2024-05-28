@@ -88,11 +88,24 @@
 
 -- 10. Nom de la bataille où le nombre de casques pris a été le plus important
 
+    SELECT bataille.nom_bataille, SUM(qte) AS casques_pris
+    FROM prendre_casque
+    INNER JOIN bataille ON prendre_casque.id_bataille = bataille.id_bataille
+    GROUP BY prendre_casque.id_bataille   
+    ORDER BY casques_pris DESC
 
 
 -- 11. Combien existe-t-il de casques de chaque type et quel est leur coût total ? (classés par nombre décroissant)
 
+    SELECT nom_type_casque, SUM(cout_casque), COUNT(id_casque)
+    FROM casque
+    INNER JOIN type_casque ON casque.id_type_casque = type_casque.id_type_casque
+    GROUP BY casque.id_type_casque
+
+
 -- 12. Nom des potions dont un des ingrédients est le poisson frais. 
+
+
 
 -- 13. Nom du/des lieu(x) possédant le plus d'habitants, en dehors du village gaulois.
 

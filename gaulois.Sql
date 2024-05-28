@@ -69,12 +69,27 @@
     WHERE composer.id_potion = 3
 
     
-
 -- 8. Nom du ou des personnages qui ont pris le plus de casques dans la bataille 'Bataille du village gaulois'
+
+    SELECT personnage.nom_personnage, qte, prendre_casque.id_casque, casque.nom_casque
+    FROM prendre_casque
+    INNER JOIN personnage ON prendre_casque.id_personnage = personnage.id_personnage
+    INNER JOIN casque ON prendre_casque.id_casque = casque.id_casque
+    WHERE id_bataille = 1 
+    ORDER BY qte DESC
+
 
 -- 9. Nom des personnages et leur quantité de potion bue (en les classant du plus grand buveur au plus petit)
 
+    SELECT nom_personnage, dose_boire, date_boire
+    FROM boire
+    INNER JOIN personnage ON boire.id_personnage = personnage.id_personnage
+    ORDER BY dose_boire DESC
+
+
 -- 10. Nom de la bataille où le nombre de casques pris a été le plus important
+
+
 
 -- 11. Combien existe-t-il de casques de chaque type et quel est leur coût total ? (classés par nombre décroissant)
 

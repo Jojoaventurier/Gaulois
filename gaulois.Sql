@@ -97,10 +97,11 @@
 
 -- 11. Combien existe-t-il de casques de chaque type et quel est leur coût total ? (classés par nombre décroissant)
 
-    SELECT nom_type_casque, SUM(cout_casque), COUNT(id_casque)
+    SELECT nom_type_casque, SUM(cout_casque), COUNT(id_casque) AS nb_par_type
     FROM casque
     INNER JOIN type_casque ON casque.id_type_casque = type_casque.id_type_casque
     GROUP BY casque.id_type_casque
+    ORDER BY nb_par_type DESC
 
 
 -- 12. Nom des potions dont un des ingrédients est le poisson frais. 

@@ -62,7 +62,13 @@
 
 -- 7. Nom des ingrédients + coût + quantité de chaque ingrédient qui composent la potion 'Santé'.
 
+    SELECT ingredient.nom_ingredient, cout_ingredient, qte, qte * cout_ingredient
+    FROM composer
+    INNER JOIN potion ON composer.id_potion = potion.id_potion
+    INNER JOIN ingredient ON composer.id_ingredient = ingredient.id_ingredient
+    WHERE composer.id_potion = 3
 
+    
 
 -- 8. Nom du ou des personnages qui ont pris le plus de casques dans la bataille 'Bataille du village gaulois'
 

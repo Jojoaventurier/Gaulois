@@ -42,7 +42,12 @@
 
 -- 5. Nom, date et lieu des batailles, classées de la plus récente à la plus ancienne (dates affichées au format jj/mm/aaaa)
 
-    
+    SELECT nom_bataille, date_bataille, lieu.nom_lieu
+    FROM bataille
+    INNER JOIN lieu ON bataille.id_lieu = lieu.id_lieu
+    ORDER BY (date_bataille)
+
+        -- Note: Avec RIGHT JOIN ou LEFT JOIN, au lieu de INNER JOIN, on peut afficher en plus les lieux dans lesquels il n'y a pas eu de bataille, ce qui n'est pas le cas avec INNER JOIN
 
 -- 6. Nom des potions + coût de réalisation de la potion (trié par coût décroissant)
 

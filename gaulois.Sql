@@ -71,13 +71,12 @@
     
 -- 8. Nom du ou des personnages qui ont pris le plus de casques dans la bataille 'Bataille du village gaulois'
 
-    SELECT personnage.nom_personnage, qte, prendre_casque.id_casque, casque.nom_casque
+    SELECT personnage.nom_personnage, SUM(qte) AS casques_pris
     FROM prendre_casque
     INNER JOIN personnage ON prendre_casque.id_personnage = personnage.id_personnage
-    INNER JOIN casque ON prendre_casque.id_casque = casque.id_casque
-    WHERE id_bataille = 1 
-    ORDER BY qte DESC
-
+    WHERE id_bataille = 1
+    GROUP BY prendre_casque.id_personnage   
+    ORDER BY casques_pris DESC
 
 -- 9. Nom des personnages et leur quantité de potion bue (en les classant du plus grand buveur au plus petit)
 

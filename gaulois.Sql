@@ -47,13 +47,22 @@
     INNER JOIN lieu ON bataille.id_lieu = lieu.id_lieu
     ORDER BY (date_bataille)
 
-        -- Note: Avec RIGHT JOIN ou LEFT JOIN, au lieu de INNER JOIN, on peut afficher en plus les lieux dans lesquels il n'y a pas eu de bataille, ce qui n'est pas le cas avec INNER JOIN
+        -- (Note: Avec RIGHT JOIN ou LEFT JOIN, au lieu de INNER JOIN, on peut afficher en plus les lieux dans lesquels il n'y a pas eu de bataille, ce qui n'est pas le cas avec INNER JOIN)
+
 
 -- 6. Nom des potions + coût de réalisation de la potion (trié par coût décroissant)
 
+    SELECT potion.nom_potion, composer.id_potion, SUM(qte * cout_ingredient) 
+    FROM composer
+    INNER JOIN ingredient ON composer.id_ingredient = ingredient.id_ingredient
+    INNER JOIN potion ON composer.id_potion = potion.id_potion
+    GROUP BY id_potion
+    ORDER BY SUM(qte * cout_ingredient) DESC
 
 
 -- 7. Nom des ingrédients + coût + quantité de chaque ingrédient qui composent la potion 'Santé'.
+
+
 
 -- 8. Nom du ou des personnages qui ont pris le plus de casques dans la bataille 'Bataille du village gaulois'
 

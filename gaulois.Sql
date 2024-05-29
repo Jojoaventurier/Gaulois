@@ -78,6 +78,19 @@
     GROUP BY prendre_casque.id_personnage   
     ORDER BY casques_pris DESC
 
+
+    -- CORRECTION :
+
+    SELECT nom_personnage, qte AS 'Nb de casques'
+    FROM personnage v, bataille b, prendre_casque pc
+    WHERE v.id_personnage = pc.id_personnage
+    AND b.id_bataille = pc.id_bataille
+    AND nom_bataille = 'Bataille du village gaulois'
+    AND qte IN (SELECT MAX(qte)
+    FROM bataille b, prendre_casque pc
+    WHERE b.id_bataille = pc.id_bataille
+    AND nom_bataille = 'Bataille du village gaulois')
+
 -- 9. Nom des personnages et leur quantité de potion bue (en les classant du plus grand buveur au plus petit)
 
     SELECT nom_personnage, dose_boire, date_boire
@@ -121,6 +134,19 @@
     GROUP BY lieu.nom_lieu
     ORDER BY compte DESC
 
+    -- CORRECTION : 
+
 -- 14. Nom des personnages qui n'ont jamais vu aucune potion
 
+    SELECT nom_personnage
+    FROM boire
+    RIGHT JOIN personnage ON boire.id_personnage = personnage.id_personnage
+    WHERE dose_boire IS NULL
+
+
 -- 15. Nom du/des personnages qui n'ont pas le droit de boire de la potion 'magique'. 
+
+    SELECT nom_personnage
+    FROM autoriser_boire
+    RIGHT JOIN personnage ON autoriser_boire.id_personnage = personnage.id_personnage
+    WHERE autoriser_boire.id_personnage IS NULL

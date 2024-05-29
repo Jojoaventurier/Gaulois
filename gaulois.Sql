@@ -134,9 +134,12 @@
 -- 12. Nom des potions dont un des ingrédients est le poisson frais. 
 
     SELECT nom_potion 
-    FROM composer
-    INNER JOIN potion ON composer.id_potion = potion.id_potion
-    WHERE composer.id_ingredient = 24
+    FROM composer c, potion p, ingredient i
+    WHERE c.id_potion = p.id_potion
+    AND c.id_ingredient = i.id_ingredient
+    AND c.id_ingredient LIKE (SELECT id_ingredient
+                                        FROM ingredient i
+                                        WHERE nom_ingredient = 'Poisson frais')
 
 
 -- 13. Nom du/des lieu(x) possédant le plus d'habitants, en dehors du village gaulois.

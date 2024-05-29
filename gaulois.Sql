@@ -180,3 +180,63 @@
     FROM autoriser_boire
     RIGHT JOIN personnage ON autoriser_boire.id_personnage = personnage.id_personnage
     WHERE autoriser_boire.id_personnage IS NULL
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------- PARTIE 2 ---------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+
+
+-- A. Ajoutez le personnage suivant : Champdeblix, agriculteur résidant à la ferme Hantassion de Rotomagus
+
+        INSERT INTO personnage (
+        
+            nom_personnage,
+            adresse_personnage,
+            image_personnage,
+            id_lieu,
+            id_specialite
+        )
+        
+        VALUES (
+        
+            'Champdeblix',
+            'ferme Hantassion',
+            DEFAULT,
+            (SELECT id_lieu FROM lieu WHERE nom_lieu LIKE 'Rotomagus'),
+            (SELECT id_specialite FROM specialite WHERE nom_specialite LIKE 'Agriculteur')
+        )
+
+        -- (NOTE : pas besoin de mettre id_personnage, puisqu'il est configuré en "auto-increment")
+
+        
+
+-- B. Autorisez Bonemine à boire de la potion magique, elle est jalouse d'Ielosubmarine
+
+        INSERT INTO autoriser_boire (
+            id_potion, 
+            id_personnage 
+        )
+
+        VALUES (
+            (SELECT id_potion 
+            FROM personnage pe, potion po 
+            WHERE pe.id_personnage = po.id_personnage 
+            AND nom_personnage = 'Iélosubmarine'),
+            
+            (SELECT id_personnage 
+            FROM personnage 
+            WHERE nom_personnage = 'Bonemine')
+        )
+
+-- C. Supprimez les casques grecs qui n'ont jamais été pris lors d'une bataille
+
+-- D. Modifiez l'adresse de Zérozérosix : il a été mis en prison à Condate
+
+-- E. La potion 'Soupe' ne doit plus contenir de persil
+
+-- F. Obélix c'est trompé : ce sont 42 casques Weisenau, et non Ostrogoths, qu'il a pris lors de la bataille 'Attaque de la banque postale'. Corrigez son erreur !
+

@@ -62,21 +62,20 @@
 
 -- 7. Nom des ingrédients + coût + quantité de chaque ingrédient qui composent la potion 'Santé'.
 
-   SELECT nom_ingredient, cout_ingredient, qte, qte * cout_ingredient AS 'total coût ingrédients'
-    FROM composer c, ingredient i
-    WHERE c.id_ingredient = i.id_ingredient
-    AND c.id_potion = (SELECT DISTINCT p.id_potion
-                                FROM composer c, potion p
-                                WHERE c.id_potion = p.id_potion
-                                AND p.nom_potion = 'Santé')
-
     SELECT nom_ingredient, cout_ingredient, qte, qte * cout_ingredient AS 'total coût ingrédients'
-    FROM composer c, ingredient i
+    FROM composer c, ingredient i, potion p
     WHERE c.id_ingredient = i.id_ingredient
-    AND c.id_potion LIKE (SELECT DISTINCT p.id_potion
-                                FROM composer c, potion p
-                                WHERE c.id_potion = p.id_potion
-                                AND p.nom_potion = 'Santé')
+    AND c.id_potion = p.id_potion
+    AND p.nom_potion LIKE 'Santé'
+
+            -- ou moins bien :  (pas spécialement besoin de sous requête) --
+        SELECT nom_ingredient, cout_ingredient, qte, qte * cout_ingredient AS 'total coût ingrédients'
+        FROM composer c, ingredient i
+        WHERE c.id_ingredient = i.id_ingredient
+        AND c.id_potion LIKE (SELECT DISTINCT p.id_potion
+                                    FROM composer c, potion p
+                                    WHERE c.id_potion = p.id_potion
+                                    AND p.nom_potion = 'Santé')
 
     
 -- 8. Nom du ou des personnages qui ont pris le plus de casques dans la bataille 'Bataille du village gaulois'
@@ -107,10 +106,11 @@
 
 -- 9. Nom des personnages et leur quantité de potion bue (en les classant du plus grand buveur au plus petit)
 
-    SELECT nom_personnage, dose_boire, date_boire
-    FROM boire
-    INNER JOIN personnage ON boire.id_personnage = personnage.id_personnage
-    ORDER BY dose_boire DESC
+    SELECT nom_personnage, SUM(dose_boire) AS 'Total bu'
+    FROM boire b, personnage p
+    WHERE b.id_personnage = p.id_personnage
+    GROUP BY nom_personnage
+    ORDER BY SUM(dose_boire) DESC
 
 
 -- 10. Nom de la bataille où le nombre de casques pris a été le plus important

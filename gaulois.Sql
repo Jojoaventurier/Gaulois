@@ -62,11 +62,21 @@
 
 -- 7. Nom des ingrédients + coût + quantité de chaque ingrédient qui composent la potion 'Santé'.
 
-    SELECT ingredient.nom_ingredient, cout_ingredient, qte, qte * cout_ingredient
-    FROM composer
-    INNER JOIN potion ON composer.id_potion = potion.id_potion
-    INNER JOIN ingredient ON composer.id_ingredient = ingredient.id_ingredient
-    WHERE composer.id_potion = 3
+   SELECT nom_ingredient, cout_ingredient, qte, qte * cout_ingredient AS 'total coût ingrédients'
+    FROM composer c, ingredient i
+    WHERE c.id_ingredient = i.id_ingredient
+    AND c.id_potion = (SELECT DISTINCT p.id_potion
+                                FROM composer c, potion p
+                                WHERE c.id_potion = p.id_potion
+                                AND p.nom_potion = 'Santé')
+
+    SELECT nom_ingredient, cout_ingredient, qte, qte * cout_ingredient AS 'total coût ingrédients'
+    FROM composer c, ingredient i
+    WHERE c.id_ingredient = i.id_ingredient
+    AND c.id_potion LIKE (SELECT DISTINCT p.id_potion
+                                FROM composer c, potion p
+                                WHERE c.id_potion = p.id_potion
+                                AND p.nom_potion = 'Santé')
 
     
 -- 8. Nom du ou des personnages qui ont pris le plus de casques dans la bataille 'Bataille du village gaulois'
@@ -80,16 +90,20 @@
 
 
     -- CORRECTION :
+     -- manque la somme des casques différents ramassés ? -- -- manque la somme des casques différents ramassés ? -- -- manque la somme des casques différents ramassés ? --
+     -- manque la somme des casques différents ramassés ? -- -- manque la somme des casques différents ramassés ? -- -- manque la somme des casques différents ramassés ? --
+            SELECT nom_personnage, qte AS 'Nb de casques'
+            FROM personnage v, bataille b, prendre_casque pc
+            WHERE v.id_personnage = pc.id_personnage
+            AND b.id_bataille = pc.id_bataille
+            AND nom_bataille = 'Bataille du village gaulois'
+            AND qte IN (SELECT MAX(qte)
+            FROM bataille b, prendre_casque pc
+            WHERE b.id_bataille = pc.id_bataille
+            AND nom_bataille = 'Bataille du village gaulois')
+    -- manque la somme des casques différents ramassés ? -- -- manque la somme des casques différents ramassés ? -- -- manque la somme des casques différents ramassés ? --
+    -- manque la somme des casques différents ramassés ? -- -- manque la somme des casques différents ramassés ? -- -- manque la somme des casques différents ramassés ? --
 
-    SELECT nom_personnage, qte AS 'Nb de casques'
-    FROM personnage v, bataille b, prendre_casque pc
-    WHERE v.id_personnage = pc.id_personnage
-    AND b.id_bataille = pc.id_bataille
-    AND nom_bataille = 'Bataille du village gaulois'
-    AND qte IN (SELECT MAX(qte)
-    FROM bataille b, prendre_casque pc
-    WHERE b.id_bataille = pc.id_bataille
-    AND nom_bataille = 'Bataille du village gaulois')
 
 -- 9. Nom des personnages et leur quantité de potion bue (en les classant du plus grand buveur au plus petit)
 
@@ -134,7 +148,22 @@
     GROUP BY lieu.nom_lieu
     ORDER BY compte DESC
 
-    -- CORRECTION : 
+            -- CORRECTION : 
+
+            SELECT nom_lieu, COUNT(*) AS 'Recensement'
+            FROM personnage v, lieu l
+            WHERE v.id_lieu = l.id_lieu
+            AND nom_lieu != 'Village gaulois'
+            GROUP BY l.id_lieu
+            HAVING COUNT(*) = 
+                (SELECT MAX(x) 
+                FROM (SELECT COUNT(id_personnage) AS x
+                        FROM personnage v, lieu l
+                        WHERE v.id_lieu = l.id_lieu
+                        AND nom_lieu != 'Village gaulois'
+                        GROUP BY l.id_lieu) y)
+
+
 
 -- 14. Nom des personnages qui n'ont jamais vu aucune potion
 

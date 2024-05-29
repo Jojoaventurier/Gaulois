@@ -133,13 +133,11 @@
 
 -- 12. Nom des potions dont un des ingrédients est le poisson frais. 
 
-    SELECT nom_potion 
+    SELECT nom_potion
     FROM composer c, potion p, ingredient i
     WHERE c.id_potion = p.id_potion
     AND c.id_ingredient = i.id_ingredient
-    AND c.id_ingredient LIKE (SELECT id_ingredient
-                                        FROM ingredient i
-                                        WHERE nom_ingredient = 'Poisson frais')
+    AND i.nom_ingredient LIKE 'Poisson frais'
 
 
 -- 13. Nom du/des lieu(x) possédant le plus d'habitants, en dehors du village gaulois.

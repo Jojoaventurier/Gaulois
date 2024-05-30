@@ -243,7 +243,11 @@
 
 -- D. Modifiez l'adresse de Zérozérosix : il a été mis en prison à Condate
 
-
+    UPDATE personnage p, lieu l
+    SET adresse_personnage = 'Prison', 
+        p.id_lieu = (SELECT id_lieu FROM lieu  WHERE nom_lieu = 'Condate')
+    WHERE p.nom_personnage LIKE 'Zérozérosix'
+    AND p.id_lieu = l.id_lieu
 
 -- E. La potion 'Soupe' ne doit plus contenir de persil
 

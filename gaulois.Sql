@@ -234,7 +234,16 @@
 
 -- C. Supprimez les casques grecs qui n'ont jamais été pris lors d'une bataille
 
+    DELETE *
+    FROM casque c
+    JOIN type_casque tp ON c.id_type_casque = tp.id_type_casque
+    LEFT JOIN prendre_casque pc ON c.id_casque = pc.id_casque --> je ne comprends pas pourquoi le résultate n'est pas le même avec RIGHT JOIN // peut être utiliser FULL OUTER JOIN pour éviter les surprises
+    WHERE tp.nom_type_casque ='Grec'
+    AND id_bataille IS NULL
+
 -- D. Modifiez l'adresse de Zérozérosix : il a été mis en prison à Condate
+
+
 
 -- E. La potion 'Soupe' ne doit plus contenir de persil
 

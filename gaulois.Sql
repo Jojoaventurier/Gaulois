@@ -258,7 +258,7 @@
     AND nom_potion = 'Soupe'
     AND nom_ingredient = 'Persil'
 
--- F. Obélix c'est trompé : ce sont 42 casques Weisenau, et non Ostrogoths, qu'il a pris lors de la bataille 'Attaque de la banque postale'. Corrigez son erreur !
+-- F. Obélix s'est trompé : ce sont 42 casques Weisenau, et non Ostrogoths, qu'il a pris lors de la bataille 'Attaque de la banque postale'. Corrigez son erreur !
 
     UPDATE prendre_casque pc
     SET pc.id_casque = (SELECT id_casque FROM casque WHERE nom_casque = 'Weisenau')

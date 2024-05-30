@@ -251,5 +251,18 @@
 
 -- E. La potion 'Soupe' ne doit plus contenir de persil
 
+    DELETE c.id_ingredient
+    FROM composer c, ingredient i, potion p
+    WHERE c.id_ingredient =	i.id_ingredient
+    AND c.id_potion = p.id_potion
+    AND nom_potion = 'Soupe'
+    AND nom_ingredient = 'Persil'
+
 -- F. Obélix c'est trompé : ce sont 42 casques Weisenau, et non Ostrogoths, qu'il a pris lors de la bataille 'Attaque de la banque postale'. Corrigez son erreur !
+
+    UPDATE prendre_casque pc
+    SET pc.id_casque = (SELECT id_casque FROM casque WHERE nom_casque = 'Weisenau')
+    WHERE pc.id_personnage = (SELECT id_personnage FROM personnage WHERE nom_personnage LIKE 'Obélix')
+    AND pc.id_casque = (SELECT id_casque FROM casque WHERE nom_casque = 'Ostrogoth')
+    AND pc.id_bataille = (SELECT id_bataille FROM bataille WHERE nom_bataille = 'Attaque de la banque postale')
 

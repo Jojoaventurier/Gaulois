@@ -1,6 +1,6 @@
--- A partir du script SQL Gaulois, écrivez et executez les requêtes suivantes : --
 
--- 1. Nom des lieux qui finissent par 'um'
+
+-- 1. 
 
     SELECT *
     FROM lieu
@@ -8,7 +8,7 @@
     LIKE '%um'
 
 
--- 2. Nombre de personnages par lieu (trié par nombre de personnages décroissant)
+-- 2. 
 
     SELECT id_lieu, COUNT(personnage.id_lieu)
     FROM personnage
@@ -24,14 +24,14 @@
         ORDER BY COUNT(id_personnage) DESC
 
 
--- 3. Nom des personnages + spécialité + adresse et lieu d'habitation, triés par lieu puis par nom de personnage
+-- 3. 
 
     SELECT nom_personnage, id_specialite, adresse_personnage, id_lieu
     FROM personnage
     ORDER BY id_lieu, nom_personnage
 
 
--- 4. Nom des spécialités avec nombre de personnages par spécialité (trié par nombre de personnages décroissant)
+-- 4. 
 
     SELECT specialite.nom_specialite, COUNT(nom_personnage)
     FROM personnage
@@ -40,7 +40,7 @@
     ORDER BY COUNT(id_personnage) DESC
 
 
--- 5. Nom, date et lieu des batailles, classées de la plus récente à la plus ancienne (dates affichées au format jj/mm/aaaa)
+-- 5. 
 
     SELECT nom_bataille, DATE_FORMAT(date_bataille, '%d-%m-%Y'), lieu.nom_lieu
     FROM bataille
@@ -50,7 +50,7 @@
         -- (Note: Avec RIGHT JOIN ou LEFT JOIN, au lieu de INNER JOIN, on peut afficher en plus les lieux dans lesquels il n'y a pas eu de bataille, ce qui n'est pas le cas avec INNER JOIN)
 
 
--- 6. Nom des potions + coût de réalisation de la potion (trié par coût décroissant)
+-- 6. 
 
     SELECT potion.nom_potion, composer.id_potion, SUM(qte * cout_ingredient) 
     FROM composer
@@ -60,7 +60,7 @@
     ORDER BY SUM(qte * cout_ingredient) DESC
 
 
--- 7. Nom des ingrédients + coût + quantité de chaque ingrédient qui composent la potion 'Santé'.
+-- 7. 
 
     SELECT nom_ingredient, cout_ingredient, qte, qte * cout_ingredient AS 'total coût ingrédients'
     FROM composer c, ingredient i, potion p
@@ -78,7 +78,7 @@
                                     AND p.nom_potion = 'Santé')
 
     
--- 8. Nom du ou des personnages qui ont pris le plus de casques dans la bataille 'Bataille du village gaulois'
+-- 8. 
 
     SELECT personnage.nom_personnage, SUM(qte) AS casques_pris
     FROM prendre_casque
@@ -104,7 +104,7 @@
     -- manque la somme des casques différents ramassés ? -- -- manque la somme des casques différents ramassés ? -- -- manque la somme des casques différents ramassés ? --
 
 
--- 9. Nom des personnages et leur quantité de potion bue (en les classant du plus grand buveur au plus petit)
+-- 9. 
 
     SELECT nom_personnage, SUM(dose_boire) AS 'Total bu'
     FROM boire b, personnage p
@@ -113,7 +113,7 @@
     ORDER BY SUM(dose_boire) DESC
 
 
--- 10. Nom de la bataille où le nombre de casques pris a été le plus important
+-- 10. 
 
     SELECT bataille.nom_bataille, SUM(qte) AS casques_pris
     FROM prendre_casque
@@ -122,7 +122,7 @@
     ORDER BY casques_pris DESC
 
 
--- 11. Combien existe-t-il de casques de chaque type et quel est leur coût total ? (classés par nombre décroissant)
+-- 11. 
 
     SELECT nom_type_casque, SUM(cout_casque), COUNT(id_casque) AS nb_par_type
     FROM casque
@@ -131,7 +131,7 @@
     ORDER BY nb_par_type DESC
 
 
--- 12. Nom des potions dont un des ingrédients est le poisson frais. 
+-- 12. 
 
     SELECT nom_potion
     FROM composer c, potion p, ingredient i
@@ -140,7 +140,7 @@
     AND i.nom_ingredient LIKE 'Poisson frais'
 
 
--- 13. Nom du/des lieu(x) possédant le plus d'habitants, en dehors du village gaulois.
+-- 13. 
 
     SELECT nom_lieu, COUNT(id_personnage) AS compte
     FROM personnage
@@ -166,7 +166,7 @@
 
 
 
--- 14. Nom des personnages qui n'ont jamais vu aucune potion
+-- 14.
 
     SELECT nom_personnage
     FROM boire
@@ -174,7 +174,7 @@
     WHERE dose_boire IS NULL
 
 
--- 15. Nom du/des personnages qui n'ont pas le droit de boire de la potion 'magique'. 
+-- 15. 
 
     SELECT nom_personnage
     FROM autoriser_boire
@@ -190,7 +190,7 @@
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 
--- A. Ajoutez le personnage suivant : Champdeblix, agriculteur résidant à la ferme Hantassion de Rotomagus
+-- A. 
 
         INSERT INTO personnage (
         
@@ -214,7 +214,7 @@
 
         
 
--- B. Autorisez Bonemine à boire de la potion magique, elle est jalouse d'Ielosubmarine
+-- B. 
 
         INSERT INTO autoriser_boire (
             id_potion, 
@@ -232,7 +232,7 @@
             WHERE nom_personnage = 'Bonemine')
         )
 
--- C. Supprimez les casques grecs qui n'ont jamais été pris lors d'une bataille
+-- C. 
 
     DELETE *
     FROM casque c
@@ -241,7 +241,7 @@
     WHERE tp.nom_type_casque ='Grec'
     AND id_bataille IS NULL
 
--- D. Modifiez l'adresse de Zérozérosix : il a été mis en prison à Condate
+-- D. 
 
     UPDATE personnage p, lieu l
     SET adresse_personnage = 'Prison', 
@@ -249,7 +249,7 @@
     WHERE p.nom_personnage LIKE 'Zérozérosix'
     AND p.id_lieu = l.id_lieu
 
--- E. La potion 'Soupe' ne doit plus contenir de persil
+-- E. 
 
     DELETE c.id_ingredient
     FROM composer c, ingredient i, potion p
@@ -258,7 +258,7 @@
     AND nom_potion = 'Soupe'
     AND nom_ingredient = 'Persil'
 
--- F. Obélix s'est trompé : ce sont 42 casques Weisenau, et non Ostrogoths, qu'il a pris lors de la bataille 'Attaque de la banque postale'. Corrigez son erreur !
+-- F. 
 
     UPDATE prendre_casque pc
     SET pc.id_casque = (SELECT id_casque FROM casque WHERE nom_casque = 'Weisenau')
